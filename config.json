@@ -1,0 +1,258 @@
+{
+ "_comment": "SOURCE OF TRUTH for your draft. If CLAUDE.md and this file disagree, this file wins. Fill in league/name/id/urls below with your own league's values and verify scoring against your league's Yahoo settings export.",
+ "league": {
+  "name": "My League",
+  "id": 123456,
+  "platform": "yahoo",
+  "url": "https://football.fantasysports.yahoo.com/f1/123456",
+  "draftUrl": "https://football.fantasysports.yahoo.com/f1/123456/draft",
+  "mockLobbyUrl": "https://football.fantasysports.yahoo.com/f1/123456/12/mock_lobby",
+  "teams": 12,
+  "draftType": "snake",
+  "draftTimeET": "2026-09-02T20:00:00-04:00",
+  "pickSeconds": 60,
+  "scoringType": "head-to-head",
+  "playoffTeams": 4,
+  "playoffWeeks": [
+   16,
+   17
+  ],
+  "regularSeasonWeeks": [
+   1,
+   17
+  ],
+  "byeWeeksEndAfter": 14
+ },
+ "roster": {
+  "starters": [
+   "QB",
+   "WR",
+   "WR",
+   "RB",
+   "RB",
+   "TE",
+   "W/R/T",
+   "K",
+   "DEF"
+  ],
+  "flexEligible": [
+   "RB",
+   "WR",
+   "TE"
+  ],
+  "bench": 6,
+  "ir": 2,
+  "draftedRounds": 15
+ },
+ "scoring": {
+  "fractional": true,
+  "negative": true,
+  "off": {
+   "passYdsPer": 25,
+   "passTd": 4,
+   "int": -1,
+   "rushYdsPer": 10,
+   "rushTd": 6,
+   "rec": 0.5,
+   "recYdsPer": 10,
+   "recTd": 6,
+   "retTd": 6,
+   "twoPt": 2,
+   "fumLost": -2,
+   "offFumRetTd": 6
+  },
+  "k": {
+   "fg0_19": 3,
+   "fg20_29": 3,
+   "fg30_39": 3,
+   "fg40_49": 4,
+   "fg50": 5,
+   "pat": 1,
+   "_noMissPenalty": true,
+   "_fgDistanceMix": {
+    "fg0_19": 0.02,
+    "fg20_29": 0.22,
+    "fg30_39": 0.28,
+    "fg40_49": 0.3,
+    "fg50": 0.18
+   }
+  },
+  "def": {
+   "sack": 1,
+   "int": 2,
+   "fumRec": 2,
+   "td": 6,
+   "safety": 2,
+   "blkKick": 2,
+   "retTd": 6,
+   "xpRet": 2,
+   "paBuckets": [
+    [
+     0,
+     0,
+     10
+    ],
+    [
+     1,
+     6,
+     7
+    ],
+    [
+     7,
+     13,
+     4
+    ],
+    [
+     14,
+     20,
+     1
+    ],
+    [
+     21,
+     27,
+     0
+    ],
+    [
+     28,
+     34,
+     -1
+    ],
+    [
+     35,
+     999,
+     -4
+    ]
+   ],
+   "paSd": 10.7,
+   "_paNote": "Points allowed is scored PER GAME against a step function. Convolve a negative-binomial per-game distribution against the buckets; never look up the bucket for a season mean."
+  }
+ },
+ "vorp": {
+  "replacementSmoothing": 3,
+  "adpSdFactor": 0.35,
+  "_flexNote": "Do not hardcode the flex split. Award each of the 12 flex slots iteratively to whichever of RB/WR/TE has the highest marginal player."
+ },
+ "durability": {
+  "positionalPrior": {
+   "QB": 15.5,
+   "RB": 14,
+   "WR": 14.8,
+   "TE": 14.5,
+   "K": 16.8,
+   "DEF": 17
+  },
+  "priorWeight": 0.6,
+  "ageDecay": {
+   "RB": {
+    "startAge": 28,
+    "perYear": 0.5
+   },
+   "WR": {
+    "startAge": 30,
+    "perYear": 0.4
+   },
+   "TE": {
+    "startAge": 30,
+    "perYear": 0.4
+   },
+   "QB": {
+    "startAge": 36,
+    "perYear": 0.4
+   }
+  },
+  "statusPenalty": {
+   "Q": 0.5,
+   "D": 1.5,
+   "O": 2.5,
+   "PUP": 6,
+   "IR": 8,
+   "NA": 4,
+   "SUS": 4
+  },
+  "clamp": [
+   6,
+   17
+  ],
+  "maxDiscount": 0.35,
+  "irCredit": {
+   "firstTwo": 0.35,
+   "thereafter": 0.05
+  },
+  "chronicMinWeeks": 4
+ },
+ "constraints": {
+  "maxByPos": {
+   "QB": 2,
+   "RB": 8,
+   "WR": 8,
+   "TE": 2,
+   "K": 1,
+   "DEF": 1
+  },
+  "kdefMinRound": 14,
+  "_kdefNote": "Config knob, default on. The adp-baseline control runs WITHOUT it so the 'K/DEF went too early' hypothesis is actually tested rather than assumed."
+ },
+ "_compositeNote": "All metrics are stored higher-is-better (byePenalty, injuryExposure, depthScore are negated at source), so these are plain positive magnitudes summing to 100.",
+ "compositeWeights": {
+  "startPtsRiskAdj": 45,
+  "startPts": 15,
+  "depthScore": 12,
+  "vorpSum": 10,
+  "byePenalty": 8,
+  "injuryExposure": 6,
+  "yahooGrade": 4
+ },
+ "sim": {
+  "sigmaBase": 2.34,
+  "sigmaPerRound": 1.573,
+  "runBonus": 1.65,
+  "runLookback": 5,
+  "runThreshold": 3,
+  "botKdefMinRound": 13,
+  "archetypes": {
+   "adpNoisy": 0.6,
+   "runFollower": 0.25,
+   "positionalNeed": 0.15
+  },
+  "slots": 12,
+  "seedsPerSlot": 20,
+  "calibratedFrom": {
+   "runs": 3,
+   "picks": 548,
+   "at": "2026-08-21T23:28:40.412Z"
+  }
+ },
+ "selectors": {
+  "_note": "Pinned here so a Yahoo UI change costs a config edit, not a code change. Verify per screen; see research/dom-contract.md.",
+  "player": ".ys-player[data-id]",
+  "playerIdAttr": "data-id",
+  "statModeSelect": "select#stat-mode-filter",
+  "statModeValues": {
+   "projected": "projected",
+   "season": "season",
+   "advanced": "advancedstats"
+  },
+  "positionSelect": "select[name=\"position-filter\"]",
+  "positionValues": {
+   "ALL": "pos_type=All",
+   "QB": "pos=QB",
+   "WR": "pos=WR",
+   "RB": "pos=RB",
+   "TE": "pos=TE",
+   "FLEX": "pos=W/R/T",
+   "K": "pos=K",
+   "DEF": "pos=DEF"
+  },
+  "searchInput": "#search",
+  "draftedToggleText": "Drafted",
+  "draftButtonText": "Draft",
+  "queueStarUnfilled": "svg[data-icon=\"star-unfilled\"]",
+  "queueStarFilled": "svg[data-icon=\"star-filled\"]"
+ },
+ "strategy": {
+  "maxStarterBye": 3,
+  "byePenalty": 12,
+  "_note": "starterWeight blends marginal starting-lineup gain with raw value; maxStarterBye/byePenalty avoid bye stacks during the draft rather than only scoring them after.",
+  "benchWeight": 0.15
+ }
+}

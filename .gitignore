@@ -1,0 +1,16 @@
+node_modules/
+.env
+
+# Scraped/generated — regenerate via scrape-board.mjs / rank.mjs / simulate.mjs.
+# data/harvest/ is NOT ignored: it's observed live-draft evidence, not regenerable.
+data/players-*.json
+data/rankings-*.json
+data/draft-snap.txt
+data/autopick-snap-*.txt
+mocks/
+sims/
+reports/
+
+# OS / editor
+.DS_Store
+*.log
