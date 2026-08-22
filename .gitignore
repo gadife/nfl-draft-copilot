@@ -1,6 +1,10 @@
 node_modules/
 .env
 
+# Your real league config — copy config.example.json to config.json and fill
+# in your own league. Never commit config.json: it holds your real league ID.
+config.json
+
 # Scraped/generated — regenerate via scrape-board.mjs / rank.mjs / simulate.mjs.
 # data/harvest/ is NOT ignored: it's observed live-draft evidence, not regenerable.
 data/players-*.json

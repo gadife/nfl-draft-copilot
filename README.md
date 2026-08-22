@@ -57,9 +57,10 @@ Requires:
   what drives the browser for scraping and live drafting
 
 Then:
-1. Edit `config.json` — fill in your own league's `id`, `name`, and URLs under
-   `league`, and verify the `scoring`/`roster` blocks against your league's
-   Yahoo settings export.
+1. `cp config.example.json config.json`, then fill in your own league's `id`,
+   `name`, and URLs under `league`, and verify the `scoring`/`roster` blocks
+   against your league's Yahoo settings export. `config.json` is gitignored —
+   it holds your real league ID, so it's never committed.
 2. `node scrape-board.mjs` — scrapes the full player pool for your league into
    `data/players-<date>.json`.
 3. `node rank.mjs` — scores and ranks it into `data/rankings-<date>.json` and
