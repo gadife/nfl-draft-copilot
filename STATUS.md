@@ -133,6 +133,13 @@ lobby joins don't reliably land in 12-team rooms — verify team count in the
 waiting room (or from the URL/config after joining) before committing next
 time, so a genuine 12-team confirmation room isn't accidentally skipped.
 
+**Higher-power confirmation (2026-08-22):** re-ran `simulate.mjs --seeds 25`
+(3,000 paired drafts, ~5 min) on the same 3-room-calibrated model, no config
+changes. `vona-starter` +29.5 vs control, **t=8.17** — the tightest confidence
+yet, still 0 sanity failures. `vorp-custom` unchanged as the closest rival but
+still 14 sanity failures. Nothing about the freeze recommendation changes;
+this just tightens the interval around the same result.
+
 ## Next actions, in order
 
 1. **Freeze `vona-starter`** — confirmed stable across 3 independently-harvested
