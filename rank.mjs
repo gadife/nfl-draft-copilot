@@ -97,7 +97,7 @@ writeFileSync(outPath, JSON.stringify({
 const topN = Number(args.top);
 const L = [];
 L.push(`# Cheat Sheet — ${cfg.league.name} · ${date}`, '');
-L.push(`12 teams · half-PPR · ${cfg.roster.draftedRounds} rounds. Ranked by **VORP** under league scoring.`, '');
+L.push(`12 teams · full-PPR · ${cfg.roster.draftedRounds} rounds. Ranked by **VORP** under league scoring.`, '');
 L.push('## Replacement level', '');
 L.push('| Pos | Starters demanded | Replacement pts | Flex slots won |');
 L.push('|---|---|---|---|');

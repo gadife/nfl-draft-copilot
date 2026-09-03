@@ -21,7 +21,7 @@ const cfg = JSON.parse(readFileSync(join(__dirname, 'config.json'), 'utf8'));
 const { values: a } = parseArgs({ options: {
   avail: { type: 'string' }, roster: { type: 'string', default: '' },
   pick: { type: 'string' }, next: { type: 'string' },
-  strategy: { type: 'string', default: 'vona-scarcity' },
+  strategy: { type: 'string', default: 'vona-starter' },
   adp: { type: 'string' },            // id:adp,id:adp — real ADP off the board
   in: { type: 'string' }, top: { type: 'string', default: '6' },
 }});
