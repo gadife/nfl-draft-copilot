@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ControlUp 2.0 — Team Roster</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #1a1d24;
+    --card-border: #2a2e38;
+    --text: #eef0f4;
+    --muted: #9aa2b1;
+    --accent: #4f8cff;
+    --good: #3ecf8e;
+    --bad: #ff6b6b;
+    --note: #f5c451;
+    --news: #5ec8e0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    padding: 28px 20px 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--card-border);
+  }
+  header h1 { margin: 0 0 4px; font-size: 1.5rem; }
+  header p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+  header p.league-id { font-size: 0.72rem; margin-bottom: 8px; }
+
+  .callouts {
+    max-width: 900px;
+    margin: 20px auto 0;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .callout {
+    background: rgba(245, 196, 81, 0.1);
+    border: 1px solid rgba(245, 196, 81, 0.35);
+    color: var(--note);
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    line-height: 1.4;
+  }
+  .callout strong { color: var(--text); }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  .position-group { margin-bottom: 34px; }
+  .position-group h2 {
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card-top { display: flex; gap: 12px; align-items: center; }
+  .photo-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #2a2e38;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--muted);
+  }
+  .photo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .id-block { min-width: 0; }
+  .id-block .name { font-weight: 600; font-size: 1.05rem; line-height: 1.2; }
+  .id-block .team-pos {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+  .team-logo { width: 16px; height: 16px; object-fit: contain; flex-shrink: 0; }
+  .badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 2px 7px;
+    border-radius: 5px;
+    margin-right: 2px;
+    vertical-align: middle;
+  }
+  .bio {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    padding: 10px 0;
+  }
+  .bio span b { color: var(--text); font-weight: 500; }
+
+  .section-line { font-size: 0.86rem; line-height: 1.45; }
+  .section-line .label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+  .label.strength { color: var(--good); }
+  .label.weakness { color: var(--bad); }
+  .label.note { color: var(--accent); }
+  .label.news { color: var(--news); }
+  .news-line {
+    background: rgba(94, 200, 224, 0.08);
+    border: 1px solid rgba(94, 200, 224, 0.25);
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+
+  @media (max-width: 420px) {
+    .grid { grid-template-columns: 1fr; }
+    header h1 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <!-- League name below fetched live from Yahoo (document.title) via get-league-name.mjs -->
+  <h1>ControlUp 2.0 League</h1>
+  <p class="league-id">League ID: 600619</p>
+  <p>Full-PPR · 6-pt Passing TD &nbsp;·&nbsp; Roster heading into Week 1, 2026</p>
+</header>
+
+<div class="callouts">
+  <div class="callout"><strong>Steelers RB timeshare:</strong> Jaylen Warren and Rico Dowdle both play for Pittsburgh now. Per the initial depth chart, Warren has the edge as RB1 (all-downs) with Dowdle as RB2 (early-down work) — still a real committee, worth checking snap counts weekly.</div>
+  <div class="callout"><strong>Titans backfield:</strong> Tony Pollard is Tennessee's actual lead back — Tyjae Spears is the pass-catching 1B behind him. Wan'Dale Robinson is the WR2 there, now facing more target competition than expected from Calvin Ridley and a rookie.</div>
+</div>
+
+<main id="app"></main>
+
+<script>
+const POSITION_COLORS = {
+  QB: '#4f8cff33', WR: '#3ecf8e33', RB: '#f5945133', TE: '#c084fc33', K: '#9aa2b133', DEF: '#ff6b6b33'
+};
+const POSITION_TEXT = {
+  QB: '#4f8cff', WR: '#3ecf8e', RB: '#f59451', TE: '#c084fc', K: '#c7ccd6', DEF: '#ff6b6b'
+};
+const TEAM_LOGOS = {
+  "Chicago Bears": "chi", "Jacksonville Jaguars": "jax", "Los Angeles Rams": "lar",
+  "Atlanta Falcons": "atl", "Tennessee Titans": "ten", "Houston Texans": "hou",
+  "Pittsburgh Steelers": "pit", "Denver Broncos": "den", "Minnesota Vikings": "min",
+  "Arizona Cardinals": "ari", "Indianapolis Colts": "ind", "Detroit Lions": "det"
+};
+function teamLogoUrl(team) {
+  const abbr = TEAM_LOGOS[team];
+  return abbr ? `https://a.espncdn.com/i/teamlogos/nfl/500/${abbr}.png` : null;
+}
+
+const ROSTER = [
+  {
+    name: "Caleb Williams", pos: "QB", team: "Chicago Bears",
+    age: 24, height: "6'1\"", weight: "214 lbs", college: "USC",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/4431611.png",
+    strength: "Adds rushing upside most QBs don't (388 rush yds, 3 rush TD in 2025) and took a real leap paired with coach Ben Johnson, finishing QB6 last year.",
+    weakness: "Notoriously slow starter within games and completed just 58% of passes last season — floor can be shaky early.",
+    note: "Was the #1 overall pick in the 2024 draft. Surrounded by good weapons in Rome Odunze, Colston Loveland and D'Andre Swift.",
+    news: "Bears went 2-1 in the preseason (beat the Titans 24-15) with Williams playing limited snaps. No injury concerns; opens Week 1 on the road at Carolina (Sun. Sept 13)."
+  },
+  {
+    name: "Trevor Lawrence", pos: "QB", team: "Jacksonville Jaguars",
+    age: 26, height: "6'6\"", weight: "220 lbs", college: "Clemson",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/4360310.png",
+    strength: "Broke out in 2025 under new coach Liam Coen — finished 4th among all QBs in fantasy points, red-hot late (26.6 pts/gm over his last 7).",
+    weakness: "9 of his TDs last year came on the ground, well above his career norm — unlikely to repeat, which could bring his numbers back down.",
+    note: "Former #1 overall pick with an up-and-down start to his career. Full receiver room returning: Brian Thomas Jr. and Jakobi Meyers.",
+    news: "Came out of training camp healthy, saying \"we're on track, keep plugging away.\" Opens Week 1 at home vs. Cleveland (Sept 13) after finishing 2025 as the NFL's highest-graded QB from Week 13 on."
+  },
+  {
+    name: "Puka Nacua", pos: "WR", team: "Los Angeles Rams",
+    age: 25, height: "6'2\"", weight: "216 lbs", college: "BYU",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/4426515.png",
+    strength: "Was the #1 PPR wide receiver in the entire league last season (23.4 pts/gm) — pure target volume playing with MVP-caliber Matthew Stafford.",
+    weakness: "Missed camp time with a groin/hip-area (psoas) injury — worth a final injury-report check before kickoff.",
+    note: "Transferred to BYU from Washington. One of the best pure receivers in fantasy, period.",
+    news: "Cleared for Week 1 — the psoas injury from an Aug 11 joint practice is behind him and he's practiced fully since. Rams open vs. San Francisco in Melbourne, Australia (Sept 10). A separate off-field legal/league-review matter is still in the background but hasn't affected his playing status."
+  },
+  {
+    name: "Drake London", pos: "WR", team: "Atlanta Falcons",
+    age: 25, height: "6'4\"", weight: "215 lbs", college: "USC",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/4426502.png",
+    strength: "Atlanta's clear #1 receiver — huge target share no matter who's throwing him the ball.",
+    weakness: "Falcons QB job is unsettled; new coach Kevin Stefanski brought in Tua Tagovailoa to compete for the starting role.",
+    note: "Just signed a 4-year, $141M extension — the third-highest-paid WR in the league. Analysts expect his role to stay the focal point regardless of QB.",
+    news: "Healthy, but played only 8 low-key preseason snaps. The Tua Tagovailoa vs. Michael Penix QB competition is still unresolved, and both are dealing with minor ailments (Tua: back; Penix: knee) — adds some uncertainty to Atlanta's Week 1 passing offense."
+  },
+  {
+    name: "Wan'Dale Robinson", pos: "WR", team: "Tennessee Titans",
+    age: 25, height: "5'8\"", weight: "185 lbs", college: "Kentucky",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/4569587.png",
+    strength: "Slot receiver (short, high-catch-volume role) which plays perfectly into PPR scoring — 92 catches, 1,014 yards in his 2025 breakout.",
+    weakness: "Doesn't create big plays (career 9.2 yds/catch) and has never scored more than 4 TDs in a season — capped ceiling even in good weeks.",
+    note: "Left the Giants this offseason on a 4-yr, $70M deal to reunite with coach Brian Daboll in Tennessee, where he's now teammates with Tyjae Spears.",
+    news: "Was checked for a concussion after a joint practice but isn't believed to have suffered one — no Week 1 concern. Daboll says his job is simply to \"get open\" for Cam Ward, though he now faces more target competition than expected from Calvin Ridley and rookie Carnell Tate; still projected as the clear WR2."
+  },
+  {
+    name: "David Montgomery", pos: "RB", team: "Houston Texans",
+    age: 29, height: "5'11\"", weight: "230 lbs", college: "Iowa State",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/4035538.png",
+    strength: "Traded from Detroit to Houston this offseason — steps into a clearer lead-back role including valuable goal-line touches. Seen as a potential low-end RB2.",
+    weakness: "Durability — missed 6 games over the last two seasons with injuries.",
+    note: "In Detroit he split carries with Jahmyr Gibbs; Houston gives him a bigger workload of his own.",
+    news: "Full-go, no injury flags. Camp buzz has been loud — he broke an 80-yard TD on a pass from C.J. Stroud during camp and is drawing \"workhorse\" praise from the Texans staff."
+  },
+  {
+    name: "Jaylen Warren", pos: "RB", team: "Pittsburgh Steelers",
+    age: 27, height: "5'8\"", weight: "215 lbs", college: "Oklahoma State",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/4569987.png",
+    strength: "Steady, efficient runner who quietly posted 958 rush yards and 40 catches in 2025. Currently listed as Pittsburgh's RB1, expected to play all three downs.",
+    weakness: "New coach Mike McCarthy brought in Rico Dowdle (also on your roster) to share the backfield, so his workload isn't a guaranteed bell-cow share even with the RB1 label.",
+    note: "Part of a genuine committee backfield with your other RB, Dowdle — check weekly snap counts before starting either.",
+    news: "Pittsburgh's initial depth chart lists Warren as RB1 over Dowdle, with reporting indicating he'll handle all three downs while Dowdle leans early-down work — a real committee, but Warren currently has the edge."
+  },
+  {
+    name: "Rico Dowdle", pos: "RB", team: "Pittsburgh Steelers",
+    age: 28, height: "5'11\"", weight: "215 lbs", college: "South Carolina",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/4038815.png",
+    strength: "Coming off a genuine breakout year elsewhere (1,076 rush yards, 6 TD); signed specifically to reunite with coach Mike McCarthy, who values him highly.",
+    weakness: "Currently slotted as RB2 behind Warren on Pittsburgh's initial depth chart, leaning toward early-down work rather than a full workload.",
+    note: "Shares touches with Jaylen Warren, so neither back gets a full workload — usage is a week-to-week guessing game.",
+    news: "Correction from earlier camp buzz: Pittsburgh's initial depth chart has him as RB2 behind Warren, not the '1A' as first reported — worth re-checking snap counts once real games start."
+  },
+  {
+    name: "RJ Harvey", pos: "RB", team: "Denver Broncos",
+    age: 25, height: "5'8\"", weight: "205 lbs", college: "UCF",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/4568490.png",
+    strength: "Coach Sean Payton has said Harvey will 'certainly' be the third-down/passing-situations back in 2026 — gives him a safe PPR floor (47 catches as a rookie).",
+    weakness: "Inefficient as a runner so far (3.7 yds/carry) and stuck in a crowded backfield with Javonte Williams/Dobbins plus a rookie.",
+    note: "Second-year back; his ceiling depends on proving he can handle more early-down work beyond passing downs.",
+    news: "No injury concerns. Payton's plan isn't to make him a workhorse but to lean into his pass-catching/big-play ability — he remains the clear passing-down option in the backfield."
+  },
+  {
+    name: "Aaron Jones Sr.", pos: "RB", team: "Minnesota Vikings",
+    age: 31, height: "5'9\"", weight: "207 lbs", college: "UTEP",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/3042519.png",
+    strength: "Handles Minnesota's passing downs (Jordan Mason takes early-down/power work) — that role keeps him PPR-relevant.",
+    weakness: "Now projects as a low-end bench/flex option rather than a difference-maker; 2025 production (9.9 pts/gm) already down from his prime.",
+    note: "Well-known veteran name entering his 10th NFL season.",
+    news: "Restructured his contract down (from $9M to $5.5M) to stay in Minnesota after the team reportedly considered cutting him. Currently a co-starter with Jordan Mason and looked good in the preseason opener (18-yard run); no fresh injury."
+  },
+  {
+    name: "Tyjae Spears", pos: "RB", team: "Tennessee Titans",
+    age: 25, height: "5'11\"", weight: "200 lbs", college: "Tulane",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/4428557.png",
+    strength: "Real chemistry catching passes out of the backfield from young QB Cam Ward (45 catches last year) — the pass-catching complement in Tennessee's backfield.",
+    weakness: "Not actually the lead back — free-agent addition Tony Pollard is Tennessee's 1A, and Tennessee also drafted rookie RB Nicholas Singleton, adding more competition for touches.",
+    note: "Nearly identical modest weekly point total (8.6–9.5) in each of his first three seasons. Now teammates with your other Titan, Wan'Dale Robinson.",
+    news: "Left a recent practice early with unspecified soreness/irritation, not considered serious. Bigger-picture correction: Tony Pollard, not Spears, is Tennessee's actual lead back — Spears profiles as the 1B pass-catcher behind him."
+  },
+  {
+    name: "Trey McBride", pos: "TE", team: "Arizona Cardinals",
+    age: 26, height: "6'4\"", weight: "246 lbs", college: "Colorado State",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/4361307.png",
+    strength: "The #1 scoring tight end in fantasy last year (126 catches, 1,239 yards, 11 TD), on the field for basically every offensive snap.",
+    weakness: "Arizona might throw less this year after drafting a rookie RB and wanting Marvin Harrison Jr. more involved — could trim targets slightly.",
+    note: "Still considered a clear top-2 tight end for 2026 even accounting for that risk.",
+    news: "Healthy — played just one snap in the final preseason game, standard rest for a starter. Ranked #13 overall on NFL's \"Top 100 Players of 2026\" list; expected to still lead the team in targets despite more competition this year."
+  },
+  {
+    name: "Tyler Warren", pos: "TE", team: "Indianapolis Colts",
+    age: 24, height: "6'6\"", weight: "256 lbs", college: "Penn State",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/4431459.png",
+    strength: "Rookie sensation in 2025 (76 catches, 817 yards, #4 scoring TE); target share should grow further with 100+ targets vacated by departing WR Michael Pittman Jr.",
+    weakness: "Only one NFL season of data to project a second-year leap from.",
+    note: "Several analysts now call him a potential 'league winner' for 2026 — a player who could single-handedly carry a fantasy roster.",
+    news: "Dealt with a minor groin injury in camp (limped off during an Aug 19 drill) but returned to practice Sept 1 and is not considered in danger of missing Week 1 (opener vs. Baltimore, Sept 13). Looked sharp in a joint practice with New England right before this update."
+  },
+  {
+    name: "Harrison Mevis", pos: "K", team: "Los Angeles Rams",
+    age: 24, height: "6'0\"", weight: "245 lbs", college: "Missouri",
+    photo: "https://a.espncdn.com/i/headshots/nfl/players/full/4574716.png",
+    strength: "Kicks for the same team as Puka Nacua, so a big Rams offensive week tends to lift both of their scores together. Hot preseason: 6-for-6 on field goals.",
+    weakness: "Like all kickers, week-to-week scoring is somewhat random no matter how good he is.",
+    note: "Underdog story — went undrafted, started last year on the practice squad, and worked his way up to Rams starting kicker by midseason (12-for-13 FG, 39-for-39 XP once he got the job).",
+    news: "Locked in as the Rams' kicker (re-signed). Outstanding preseason: 6-for-6 on field goals, 8-for-8 extra points across 3 exhibition games. Opens Week 1 vs. the 49ers in Melbourne, Australia (Sept 10)."
+  },
+];
+
+const DEFENSE = {
+  name: "Detroit Lions", pos: "DEF", team: "Detroit Lions",
+  meta: "Head coach: Dan Campbell",
+  photo: "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+  strength: "4th-most sacks in the NFL last season, led by star pass-rusher Aidan Hutchinson — ranked top-10 by advanced defensive metrics.",
+  weakness: "As with any defense, a bad game script (falling behind early) can tank a week's score regardless of talent.",
+  note: "Added more talent via free agency and the draft this offseason, and has the easiest schedule in the NFL through the first five weeks — good matchups right out of the gate.",
+  news: "No notable injury or roster news beyond the known offseason additions — heads into Week 1 at full strength."
+};
+
+function initials(name) {
+  return name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+}
+
+function photoHtml(name, photo) {
+  const fallback = initials(name);
+  return `<div class="photo-wrap" data-fallback="${fallback}">
+    <img src="${photo}" alt="${name}" loading="lazy"
+      onerror="this.parentElement.innerHTML=this.parentElement.dataset.fallback; this.parentElement.style.color='var(--muted)';">
+  </div>`;
+}
+
+function logoHtml(team) {
+  const url = teamLogoUrl(team);
+  if (!url) return '';
+  return `<img class="team-logo" src="${url}" alt="${team} logo" loading="lazy" onerror="this.style.display='none';">`;
+}
+
+function playerCard(p) {
+  const color = POSITION_TEXT[p.pos];
+  const bg = POSITION_COLORS[p.pos];
+  const bioLine = p.meta
+    ? `<div class="bio"><span>${p.meta}</span></div>`
+    : `<div class="bio">
+        <span><b>${p.age}</b> yrs old</span>
+        <span><b>${p.height}</b>, ${p.weight}</span>
+        <span><b>${p.college}</b></span>
+      </div>`;
+  return `
+  <div class="card">
+    <div class="card-top">
+      ${photoHtml(p.name, p.photo)}
+      <div class="id-block">
+        <div class="name">${p.name}</div>
+        <div class="team-pos">
+          <span class="badge" style="background:${bg};color:${color}">${p.pos}</span>
+          ${logoHtml(p.team)}
+          <span>${p.team}</span>
+        </div>
+      </div>
+    </div>
+    ${bioLine}
+    <div class="section-line"><span class="label strength">Strength</span>${p.strength}</div>
+    <div class="section-line"><span class="label weakness">Weakness</span>${p.weakness}</div>
+    <div class="section-line"><span class="label note">Get to know</span>${p.note}</div>
+    <div class="section-line news-line"><span class="label news">Latest News</span>${p.news}</div>
+  </div>`;
+}
+
+const ORDER = ["QB", "WR", "RB", "TE", "K", "DEF"];
+const LABELS = { QB: "Quarterback", WR: "Wide Receiver", RB: "Running Back", TE: "Tight End", K: "Kicker", DEF: "Defense" };
+
+let html = '';
+ORDER.forEach(pos => {
+  const players = pos === "DEF" ? [DEFENSE] : ROSTER.filter(p => p.pos === pos);
+  if (!players.length) return;
+  html += `<section class="position-group">
+    <h2>${LABELS[pos]}</h2>
+    <div class="grid">${players.map(playerCard).join('')}</div>
+  </section>`;
+});
+
+document.getElementById('app').innerHTML = html;
+</script>
+
+</body>
+</html>
